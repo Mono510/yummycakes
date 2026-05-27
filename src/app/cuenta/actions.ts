@@ -20,7 +20,7 @@ export async function login(formData: FormData) {
 export async function register(formData: FormData) {
   const supabase = await createClient()
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email: formData.get('email') as string,
     password: formData.get('password') as string,
     options: {
@@ -34,7 +34,21 @@ export async function register(formData: FormData) {
     return { error: error.message }
   }
 
+  if (data.user) {
+    await supabase.from('profiles').insert({
+      id: data.user.id,
+      full_name: formData.get('full_name') as string,
+    })
+  }
+
   redirect('/cuenta/dashboard')
+}
+
+export async function resendConfirmation(email: string) {
+  const supabase = await createClient()
+  const { error } = await supabase.auth.resend({ type: 'signup', email })
+  if (error) return { error: 'No pudimos reenviar el correo. Verifica que el email sea correcto.' }
+  return { success: true }
 }
 
 export async function logout() {

@@ -57,7 +57,7 @@ export default function RegistroPage() {
                 type="text"
                 required
                 placeholder="Ej: María González"
-                className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-transparent transition-all"
+                className="w-full bg-white text-stone-800 border border-stone-200 rounded-xl px-4 py-3 text-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-transparent transition-all"
               />
             </div>
 
@@ -71,7 +71,7 @@ export default function RegistroPage() {
                 required
                 autoComplete="email"
                 placeholder="tu@correo.com"
-                className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-transparent transition-all"
+                className="w-full bg-white text-stone-800 border border-stone-200 rounded-xl px-4 py-3 text-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-transparent transition-all"
               />
             </div>
 
@@ -85,7 +85,7 @@ export default function RegistroPage() {
                 required
                 minLength={6}
                 placeholder="Mínimo 6 caracteres"
-                className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-transparent transition-all"
+                className="w-full bg-white text-stone-800 border border-stone-200 rounded-xl px-4 py-3 text-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-transparent transition-all"
               />
             </div>
 
@@ -98,7 +98,7 @@ export default function RegistroPage() {
                 type="password"
                 required
                 placeholder="Repite tu contraseña"
-                className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-transparent transition-all"
+                className="w-full bg-white text-stone-800 border border-stone-200 rounded-xl px-4 py-3 text-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-transparent transition-all"
               />
             </div>
 

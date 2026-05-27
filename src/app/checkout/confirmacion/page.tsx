@@ -1,11 +1,22 @@
 import Link from 'next/link'
+import { createClient } from '@/lib/supabase/server'
 
 export default async function ConfirmacionPage({
   searchParams,
 }: {
-  searchParams: Promise<{ order?: string }>
+  searchParams: Promise<{ order?: string; status?: string; payment_id?: string }>
 }) {
-  const { order } = await searchParams
+  const { order, status, payment_id } = await searchParams
+
+  // Si MP redirigió con status=approved, actualizamos el pedido a "paid"
+  if (order && (status === 'approved' || payment_id)) {
+    const supabase = await createClient()
+    await supabase
+      .from('orders')
+      .update({ status: 'paid' })
+      .eq('id', order)
+      .eq('status', 'pending')
+  }
 
   return (
     <div className="min-h-screen bg-[#FFFDF9] flex items-center justify-center px-4">
@@ -43,17 +54,17 @@ export default async function ConfirmacionPage({
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
             </div>
             <p className="text-sm text-stone-600">
-              El pago se coordina al momento del retiro o entrega.
+              Tu pago fue procesado correctamente. ¡Gracias por tu confianza!
             </p>
           </div>
         </div>
 
         <div className="flex flex-col gap-3">
           <Link
-            href="/catalogo"
+            href="/cuenta/dashboard"
             className="block w-full bg-stone-800 hover:bg-stone-700 text-white py-3.5 rounded-full font-bold uppercase tracking-widest text-sm transition-all"
           >
-            Seguir comprando
+            Ver mis pedidos
           </Link>
           <Link
             href="/"

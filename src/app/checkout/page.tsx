@@ -1,5 +1,5 @@
 'use client'
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect } from 'react'
 import { useCartStore } from '@/modules/cart/hooks/useCartStore'
 import { useAuth } from '@/modules/auth/AuthProvider'
 import { createOrder } from './actions'
@@ -31,6 +31,7 @@ export default function CheckoutPage() {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
+  const [mounted, setMounted] = useState(false)
   const [deliveryType, setDeliveryType] = useState<'pickup' | 'delivery'>('pickup')
   const [paymentMethod, setPaymentMethod] = useState<'mercadopago' | 'card'>('mercadopago')
   const [selectedAddress, setSelectedAddress] = useState<{
@@ -39,9 +40,19 @@ export default function CheckoutPage() {
     commune: string
   } | null>(null)
 
+  useEffect(() => setMounted(true), [])
+
   const subtotal = total()
   const shippingCost = deliveryType === 'delivery' ? DELIVERY_COST : 0
   const totalWithShipping = subtotal + shippingCost
+
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-[#FFFDF9] flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-rose-200 border-t-rose-400 rounded-full animate-spin" />
+      </div>
+    )
+  }
 
   if (items.length === 0) {
     return (
@@ -97,7 +108,12 @@ export default function CheckoutPage() {
       }
 
       clearCart()
-      router.push(`/checkout/confirmacion?order=${result.orderId}`)
+
+      if (result.redirectUrl) {
+        window.location.href = result.redirectUrl
+      } else {
+        router.push(`/checkout/confirmacion?order=${result.orderId}`)
+      }
     })
   }
 
@@ -132,14 +148,14 @@ export default function CheckoutPage() {
                     required
                     defaultValue={user?.email ?? ''}
                     placeholder="Correo electrónico"
-                    className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-rose-200 bg-white"
+                    className="w-full bg-white text-stone-800 border border-stone-200 rounded-xl px-4 py-3 text-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-rose-200"
                   />
                   <input
                     name="phone"
                     type="tel"
                     required
                     placeholder="+56 9 1234 5678"
-                    className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-rose-200 bg-white"
+                    className="w-full bg-white text-stone-800 border border-stone-200 rounded-xl px-4 py-3 text-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-rose-200"
                   />
                   <label className="flex items-center gap-2 text-sm text-stone-400 cursor-pointer">
                     <input type="checkbox" name="newsletter" className="rounded" />
@@ -230,7 +246,7 @@ export default function CheckoutPage() {
                       type="date"
                       required
                       min={getMinDate()}
-                      className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-rose-200 bg-white"
+                      className="w-full bg-white text-stone-800 border border-stone-200 rounded-xl px-4 py-3 text-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-rose-200"
                     />
                   </div>
                   <div>
@@ -239,7 +255,7 @@ export default function CheckoutPage() {
                       name="time_slot"
                       required
                       defaultValue=""
-                      className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-rose-200 bg-white"
+                      className="w-full bg-white text-stone-800 border border-stone-200 rounded-xl px-4 py-3 text-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-rose-200"
                     >
                       <option value="" disabled>Selecciona</option>
                       {TIME_SLOTS.map(t => (
@@ -260,7 +276,7 @@ export default function CheckoutPage() {
                     required
                     defaultValue={user?.user_metadata?.full_name ?? ''}
                     placeholder="Nombre completo"
-                    className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-rose-200 bg-white"
+                    className="w-full bg-white text-stone-800 border border-stone-200 rounded-xl px-4 py-3 text-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-rose-200"
                   />
                   <textarea
                     name="notes"

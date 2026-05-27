@@ -1,15 +1,19 @@
 'use client'
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useRef } from 'react'
 import Link from 'next/link'
-import { login } from '../actions'
+import { login, resendConfirmation } from '../actions'
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null)
+  const [resendMsg, setResendMsg] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
+  const [isResending, startResend] = useTransition()
+  const emailRef = useRef<HTMLInputElement>(null)
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError(null)
+    setResendMsg(null)
     const formData = new FormData(e.currentTarget)
 
     startTransition(async () => {
@@ -18,11 +22,24 @@ export default function LoginPage() {
     })
   }
 
+  function handleResend() {
+    const email = emailRef.current?.value
+    if (!email) {
+      setResendMsg('Escribe tu correo arriba antes de reenviar.')
+      return
+    }
+    setResendMsg(null)
+    startResend(async () => {
+      const result = await resendConfirmation(email)
+      if (result?.error) setResendMsg(result.error)
+      else setResendMsg('Correo reenviado. Revisa tu bandeja de entrada.')
+    })
+  }
+
   return (
     <div className="min-h-screen bg-[#FFFDF9] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
 
-        {/* Logo */}
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-[#F8BBD0] rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-sm mx-auto mb-4">
             YC
@@ -35,7 +52,6 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Card */}
         <div className="bg-white rounded-2xl shadow-sm border border-stone-100 p-8">
           <h2 className="text-stone-400 font-semibold text-xs uppercase tracking-widest mb-6">
             Acceder
@@ -47,12 +63,13 @@ export default function LoginPage() {
                 Correo electrónico
               </label>
               <input
+                ref={emailRef}
                 name="email"
                 type="email"
                 required
                 autoComplete="email"
                 placeholder="tu@correo.com"
-                className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-transparent transition-all"
+                className="w-full bg-white text-stone-800 border border-stone-200 rounded-xl px-4 py-3 text-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-transparent transition-all"
               />
             </div>
 
@@ -66,13 +83,31 @@ export default function LoginPage() {
                 required
                 autoComplete="current-password"
                 placeholder="••••••••"
-                className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-transparent transition-all"
+                className="w-full bg-white text-stone-800 border border-stone-200 rounded-xl px-4 py-3 text-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-transparent transition-all"
               />
             </div>
 
             {error && (
               <div className="bg-red-50 border border-red-100 text-red-600 text-sm px-4 py-3 rounded-xl">
                 {error}
+                <button
+                  type="button"
+                  onClick={handleResend}
+                  disabled={isResending}
+                  className="block mt-2 text-xs text-rose-500 hover:underline disabled:opacity-50 font-semibold"
+                >
+                  {isResending ? 'Reenviando...' : '¿No te llegó el correo de confirmación? Reenviar ahora'}
+                </button>
+              </div>
+            )}
+
+            {resendMsg && (
+              <div className={`text-sm px-4 py-3 rounded-xl border ${
+                resendMsg.includes('Correo reenviado')
+                  ? 'bg-green-50 border-green-100 text-green-700'
+                  : 'bg-amber-50 border-amber-100 text-amber-700'
+              }`}>
+                {resendMsg}
               </div>
             )}
 
@@ -94,10 +129,7 @@ export default function LoginPage() {
             </Link>
             <p className="text-sm text-stone-500">
               ¿No tienes cuenta?{' '}
-              <Link
-                href="/cuenta/registro"
-                className="text-rose-500 font-semibold hover:underline"
-              >
+              <Link href="/cuenta/registro" className="text-rose-500 font-semibold hover:underline">
                 Crear cuenta
               </Link>
             </p>

@@ -22,11 +22,18 @@ export type Product = {
 
 export type Order = {
   id: string
-  user_id: string
+  user_id: string | null
+  guest_name: string | null
+  guest_email: string | null
+  guest_phone: string | null
   status: 'pending' | 'paid' | 'preparing' | 'ready' | 'delivered' | 'cancelled'
   total: number
   delivery_type: 'pickup' | 'delivery'
   delivery_address: string | null
+  commune: string | null
+  scheduled_date: string | null
+  scheduled_time_slot: string | null
+  payment_method: string | null
   notes: string | null
   created_at: string
   order_items?: OrderItem[]

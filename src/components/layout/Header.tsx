@@ -19,44 +19,85 @@ export default function Header() {
     <header className="w-full bg-white border-b border-stone-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between gap-8">
 
-        {/* Logo — sin cambios */}
-        <Link href="/" className="flex-shrink-0">
-          <div className="flex items-center gap-2">
-            <div className="w-12 h-12 bg-[#F8BBD0] rounded-full flex items-center justify-center text-white font-bold text-xl shadow-sm">
-              YC
+        <Link href="/" className="flex-shrink-0 group">
+          <div className="flex items-center gap-3">
+            {/* Logo mark */}
+            <div className="w-11 h-11 flex-shrink-0">
+              <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="22" cy="22" r="22" fill="#FBCFE8"/>
+                {/* Torta */}
+                <rect x="11" y="26" width="22" height="8" rx="2" fill="white" opacity="0.9"/>
+                <rect x="13" y="21" width="18" height="7" rx="2" fill="white" opacity="0.75"/>
+                {/* Velas */}
+                <rect x="16" y="16" width="2.5" height="6" rx="1.2" fill="#f9a8d4"/>
+                <rect x="21" y="14" width="2.5" height="8" rx="1.2" fill="#f9a8d4"/>
+                <rect x="26" y="16" width="2.5" height="6" rx="1.2" fill="#f9a8d4"/>
+                {/* Llamas */}
+                <ellipse cx="17.25" cy="15.5" rx="1.5" ry="2" fill="#fb923c"/>
+                <ellipse cx="22.25" cy="13.5" rx="1.5" ry="2" fill="#fb923c"/>
+                <ellipse cx="27.25" cy="15.5" rx="1.5" ry="2" fill="#fb923c"/>
+              </svg>
             </div>
-            <span className="font-display text-2xl text-stone-800 font-bold hidden sm:block">Yummy Cakes</span>
+            {/* Wordmark */}
+            <div className="hidden sm:block">
+              <span className="font-display text-xl font-bold text-stone-800 tracking-wide leading-none block group-hover:text-rose-500 transition-colors">
+                Yummy Cakes
+              </span>
+              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-rose-300 leading-none">
+                Pastelería artesanal
+              </span>
+            </div>
           </div>
         </Link>
 
-        {/* Buscador — sin cambios */}
-        <div className="flex-grow max-w-2xl relative">
-          <input
-            type="text"
-            placeholder="Search for..."
-            className="w-full bg-stone-100 border-none rounded-full py-2.5 px-6 pl-12 focus:ring-2 focus:ring-rose-200 transition-all text-sm"
-          />
-          <svg className="absolute left-4 top-3 text-stone-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </div>
-
         {/* Acceso y Carrito */}
         <div className="flex items-center gap-4">
-          {!loading && (
-            user ? (
-              <Link href="/cuenta/dashboard" className="flex items-center gap-2 text-stone-600 hover:text-rose-500 transition-colors">
-                <div className="w-8 h-8 bg-rose-100 rounded-full flex items-center justify-center text-rose-500 font-bold text-sm">
+          {/* Estado de sesión — siempre visible */}
+          {loading ? (
+            <div className="flex items-center gap-2.5 animate-pulse">
+              <div className="w-8 h-8 bg-stone-200 rounded-full" />
+              <div className="flex flex-col gap-1">
+                <div className="w-20 h-2.5 bg-stone-200 rounded" />
+                <div className="w-14 h-2 bg-stone-100 rounded" />
+              </div>
+            </div>
+          ) : user ? (
+            <div className="flex items-center gap-3">
+              <Link href="/cuenta/dashboard" className="flex items-center gap-2.5 group">
+                <div className="w-9 h-9 bg-rose-400 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0 group-hover:bg-rose-500 transition-colors">
                   {(user.user_metadata?.full_name ?? user.email ?? 'U')[0].toUpperCase()}
                 </div>
-                <span className="text-sm font-medium hidden md:block">
-                  {user.user_metadata?.full_name ?? 'Mi cuenta'}
+                <div className="flex flex-col leading-tight">
+                  <span className="text-sm font-bold text-stone-800 group-hover:text-rose-500 transition-colors">
+                    {user.user_metadata?.full_name ?? user.email?.split('@')[0] ?? 'Mi cuenta'}
+                  </span>
+                  <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">
+                    ● Conectado
+                  </span>
+                </div>
+              </Link>
+              {user.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL && (
+                <Link
+                  href="/admin"
+                  className="flex items-center gap-1.5 bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                  Dashboard
+                </Link>
+              )}
+            </div>
+          ) : (
+            <Link href="/cuenta/login" className="flex items-center gap-2.5 group">
+              <div className="w-9 h-9 bg-stone-200 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-rose-100 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-stone-500"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <div className="flex flex-col leading-tight">
+                <span className="text-sm font-bold text-stone-700 group-hover:text-rose-500 transition-colors">Ingresar</span>
+                <span className="text-[10px] text-stone-400 font-semibold uppercase tracking-wider">
+                  ○ Sin sesión
                 </span>
-              </Link>
-            ) : (
-              <Link href="/cuenta/login" className="flex items-center gap-2 text-stone-600 hover:text-rose-500 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                <span className="text-sm font-medium hidden md:block">Account</span>
-              </Link>
-            )
+              </div>
+            </Link>
           )}
 
           {/* 👇 CAMBIO 2: botón conectado al store */}
@@ -75,8 +116,8 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Navegación — sin cambios */}
       <nav className="max-w-7xl mx-auto px-4 h-12 flex items-center justify-center gap-8 text-sm font-semibold text-stone-600 uppercase tracking-widest border-t border-stone-50">
+        <Link href="/" className="hover:text-rose-500 transition-colors">Inicio</Link>
         <div
           className="relative group"
           onMouseEnter={() => setIsPasteleriaOpen(true)}
@@ -92,9 +133,15 @@ export default function Header() {
             </div>
           )}
         </div>
+        <Link href="/#bestsellers" className="hover:text-rose-500 transition-colors">Favoritos</Link>
         <Link href="/nosotros" className="hover:text-rose-500 transition-colors">Sobre nosotros</Link>
         <Link href="/retiro-delivery" className="hover:text-rose-500 transition-colors">Retiro y Delivery</Link>
         <Link href="/cuenta" className="hover:text-rose-500 transition-colors">Mi cuenta</Link>
+        {mounted && user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL && (
+          <Link href="/admin" className="text-rose-500 hover:text-rose-600 transition-colors border border-rose-200 hover:border-rose-400 px-3 py-0.5 rounded-full">
+            Admin
+          </Link>
+        )}
       </nav>
     </header>
   )

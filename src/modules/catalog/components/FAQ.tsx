@@ -19,28 +19,52 @@ const faqs = [
 
 export default function FAQ() {
   return (
-    <section className="max-w-4xl mx-auto px-4 py-16">
-      <div className="text-center mb-10">
-        <h2 className="font-display text-3xl text-stone-800 font-bold mb-4">Preguntas Frecuentes</h2>
-        <p className="text-stone-600">Resolvemos tus dudas más comunes antes de hacer tu pedido dulce.</p>
+    <section className="max-w-5xl mx-auto px-4 py-24">
+
+      {/* Header */}
+      <div className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+        <div>
+          <p className="text-rose-400 text-[10px] font-bold uppercase tracking-[0.45em] mb-4">
+            Resolvemos tus dudas
+          </p>
+          <h2 className="font-display text-5xl md:text-7xl text-stone-800 font-bold leading-[0.95]">
+            Preguntas<br />frecuentes.
+          </h2>
+        </div>
+        <p className="text-stone-500 text-sm max-w-xs leading-relaxed md:text-right">
+          Todo lo que necesitas saber antes de hacer tu pedido dulce.
+        </p>
       </div>
 
-      <div className="space-y-4">
+      {/* FAQ list */}
+      <div>
         {faqs.map((faq, index) => (
-          <details 
+          <details
             key={index}
-            className="group bg-white border border-stone-200 rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden"
+            className="group border-t border-stone-200 last:border-b [&_summary::-webkit-details-marker]:hidden"
           >
-            <summary className="flex items-center justify-between p-5 cursor-pointer font-semibold text-stone-800 hover:text-rose-500 transition-colors">
-              <span>{faq.question}</span>
-              <span className="transition duration-300 group-open:-rotate-180">
-                <svg fill="none" height="24" shapeRendering="geometricPrecision" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24" width="24">
-                  <path d="M6 9l6 6 6-6"></path>
-                </svg>
+            <summary className="flex items-start gap-6 py-7 cursor-pointer select-none">
+              {/* Large number */}
+              <span className="font-display text-5xl text-stone-200 font-bold leading-none select-none flex-shrink-0 group-open:text-rose-200 transition-colors w-14 text-right">
+                {String(index + 1).padStart(2, '0')}
               </span>
+
+              {/* Question + toggle */}
+              <div className="flex-grow flex items-start justify-between pt-1 gap-4">
+                <p className="font-display text-xl md:text-2xl text-stone-800 font-medium leading-tight group-open:text-rose-600 transition-colors">
+                  {faq.question}
+                </p>
+                <span className="text-stone-400 group-open:text-rose-400 group-open:rotate-45 transition-all duration-300 flex-shrink-0 text-3xl font-light leading-none mt-0.5">
+                  +
+                </span>
+              </div>
             </summary>
-            <div className="p-5 pt-0 text-stone-600 border-t border-stone-100 bg-stone-50">
-              <p className="mt-3">{faq.answer}</p>
+
+            {/* Answer */}
+            <div className="ml-20 pb-8">
+              <p className="text-stone-500 leading-relaxed text-base">
+                {faq.answer}
+              </p>
             </div>
           </details>
         ))}

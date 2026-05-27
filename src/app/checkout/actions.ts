@@ -1,5 +1,6 @@
 'use server'
 import { createClient } from '@/lib/supabase/server'
+import { MercadoPagoConfig, Preference } from 'mercadopago'
 
 interface OrderPayload {
   userId: string | null
@@ -66,9 +67,39 @@ export async function createOrder(payload: OrderPayload) {
     return { error: 'Error al guardar los productos del pedido.' }
   }
 
-  // 🔌 Aquí va Mercado Pago (RF-04)
-  // const mpUrl = await createMercadoPagoPreference(order, payload.items)
-  // return { orderId: order.id, redirectUrl: mpUrl }
+  // Mercado Pago Checkout Pro — siempre, retiro o delivery
+  try {
+      const mp = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN! })
+      const preference = new Preference(mp)
 
-  return { orderId: order.id }
+      const result = await preference.create({
+        body: {
+          items: payload.items.map(item => ({
+            id: item.productId,
+            title: `Producto × ${item.quantity}`,
+            quantity: item.quantity,
+            unit_price: item.unitPrice,
+            currency_id: 'CLP',
+          })),
+          payer: {
+            name: payload.guestName,
+            email: payload.guestEmail,
+            phone: { number: payload.guestPhone },
+          },
+          back_urls: {
+            success: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'}/checkout/confirmacion?order=${order.id}`,
+            failure: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'}/checkout?error=pago-fallido`,
+            pending: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'}/checkout/confirmacion?order=${order.id}&status=pending`,
+          },
+          external_reference: order.id,
+          auto_return: process.env.NEXT_PUBLIC_SITE_URL ? 'approved' : undefined,
+          notification_url: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'}/api/mp-webhook`,
+        },
+      })
+
+      return { orderId: order.id, redirectUrl: result.init_point! }
+  } catch (err: any) {
+    console.error('Error Mercado Pago:', err?.message ?? err)
+    return { error: 'No se pudo conectar con Mercado Pago. Intenta de nuevo.' }
+  }
 }

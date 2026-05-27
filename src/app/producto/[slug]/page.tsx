@@ -24,7 +24,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
         <div className="sticky top-32 space-y-4">
           <div className="aspect-[4/5] rounded-3xl overflow-hidden bg-rose-50">
-            <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
+            <img
+              src={product.images?.[0] ?? 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=800'}
+              alt={product.name}
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
 
