@@ -97,9 +97,6 @@ export default async function HomePage() {
           <div className="max-w-7xl mx-auto px-4 pt-16 pb-4">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
               <div>
-                <p className="text-rose-300/70 text-[10px] font-bold uppercase tracking-[0.45em] mb-3">
-                  Los favoritos
-                </p>
                 <h2 className="font-display text-5xl md:text-6xl text-white font-bold leading-none">
                   Nuestro<br />Bestseller.
                 </h2>

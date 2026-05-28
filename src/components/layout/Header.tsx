@@ -133,7 +133,6 @@ export default function Header() {
             </div>
           )}
         </div>
-        <Link href="/#bestsellers" className="hover:text-rose-500 transition-colors">Favoritos</Link>
         <Link href="/nosotros" className="hover:text-rose-500 transition-colors">Sobre nosotros</Link>
         <Link href="/retiro-delivery" className="hover:text-rose-500 transition-colors">Retiro y Delivery</Link>
         <Link href="/cuenta" className="hover:text-rose-500 transition-colors">Mi cuenta</Link>
