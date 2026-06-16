@@ -7,6 +7,11 @@ export default async function NuevoProductoPage() {
   const supabase = await createClient()
   const { data: categories } = await supabase.from('categories').select('*').order('name')
 
+  const action = async (formData: FormData) => {
+    'use server'
+    await createProduct(formData)
+  }
+
   return (
     <div className="p-8 max-w-2xl">
       <div className="flex items-center gap-4 mb-8">
@@ -19,7 +24,7 @@ export default async function NuevoProductoPage() {
         </div>
       </div>
 
-      <form action={createProduct} className="bg-white rounded-2xl border border-stone-100 shadow-sm p-8 space-y-6">
+      <form action={action} className="bg-white rounded-2xl border border-stone-100 shadow-sm p-8 space-y-6">
 
         <div>
           <label className="block text-xs font-bold uppercase tracking-wider text-stone-400 mb-2">Nombre *</label>
