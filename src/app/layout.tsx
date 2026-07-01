@@ -5,6 +5,7 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { AuthProvider } from '@/modules/auth/AuthProvider'
 import CartDrawer from '@/modules/cart/components/CartDrawer'
+import ChatWidget from '@/modules/chatbot/ChatWidget'
 import 'leaflet/dist/leaflet.css'
 
 const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-dm-sans' })
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </main>
           <Footer />
+          <ChatWidget />
         </AuthProvider>
       </body>
     </html>
