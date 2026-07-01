@@ -1,6 +1,6 @@
 'use client'
 import { useState, useTransition, useEffect } from 'react'
-import { useCartStore } from '@/modules/cart/hooks/useCartStore'
+import { useCartStore, getItemKey } from '@/modules/cart/hooks/useCartStore'
 import { useAuth } from '@/modules/auth/AuthProvider'
 import { createOrder } from './actions'
 import { useRouter } from 'next/navigation'
@@ -78,6 +78,22 @@ export default function CheckoutPage() {
 
     const fd = new FormData(e.currentTarget)
 
+    // Consolidar la personalización (relleno + mensaje) en las notas del pedido,
+    // para que la pastelera lo vea junto a la nota general.
+    const generalNotes = ((fd.get('notes') as string) || '').trim()
+    const detailLines = items
+      .filter(i => i.flavor || i.message)
+      .map(i => {
+        const parts = [`${i.quantity}× ${i.product.name} (${i.size})`]
+        if (i.flavor) parts.push(`relleno: ${i.flavor}`)
+        if (i.message) parts.push(`mensaje: "${i.message}"`)
+        return '• ' + parts.join(' — ')
+      })
+    const combinedNotes = [
+      generalNotes,
+      detailLines.length ? 'Personalización:\n' + detailLines.join('\n') : '',
+    ].filter(Boolean).join('\n\n')
+
     startTransition(async () => {
       const result = await createOrder({
         userId: user?.id ?? null,
@@ -91,13 +107,13 @@ export default function CheckoutPage() {
         commune: deliveryType === 'delivery' ? selectedAddress?.commune ?? null : null,
         scheduledDate: fd.get('scheduled_date') as string,
         scheduledTimeSlot: fd.get('time_slot') as string,
-        notes: fd.get('notes') as string,
+        notes: combinedNotes,
         paymentMethod,
         items: items.map(i => ({
           productId: i.product.id,
           quantity: i.quantity,
           unitPrice: i.product.price,
-          size: i.size,
+          size: i.flavor ? `${i.size} · Relleno: ${i.flavor}` : i.size,
         })),
         total: totalWithShipping,
       })
@@ -362,7 +378,7 @@ export default function CheckoutPage() {
 
                 <div className="px-6 py-4 space-y-4">
                   {items.map(item => (
-                    <div key={`${item.product.id}-${item.size}`} className="flex gap-3">
+                    <div key={getItemKey(item)} className="flex gap-3">
                       <div className="relative flex-shrink-0">
                         <div className="w-14 h-14 bg-rose-50 rounded-xl overflow-hidden">
                           {item.product.images?.[0] ? (
@@ -378,6 +394,8 @@ export default function CheckoutPage() {
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold text-stone-700 truncate">{item.product.name}</p>
                         <p className="text-xs text-stone-400">{item.size}</p>
+                        {item.flavor && <p className="text-xs text-stone-400">Relleno: {item.flavor}</p>}
+                        {item.message && <p className="text-xs text-rose-400 italic truncate">“{item.message}”</p>}
                       </div>
                       <p className="text-sm font-bold text-stone-700 flex-shrink-0">
                         {formatPrice(item.product.price * item.quantity)}

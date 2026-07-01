@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import AddToCartButton from '@/modules/cart/components/AddToCartButton'
 import ProductGallery from '@/modules/catalog/components/ProductGallery'
+import WhatsAppOrderButton from '@/modules/catalog/components/WhatsAppOrderButton'
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params  // 👈 las dos correcciones están aquí
@@ -38,12 +39,18 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             {product.description}
           </div>
 
-          <AddToCartButton product={product} />
+          {product.slug === 'torta-personalizada' ? (
+            <WhatsAppOrderButton product={product} />
+          ) : (
+            <>
+              <AddToCartButton product={product} />
 
-          <div className="flex items-center gap-2 text-rose-500 font-bold text-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-            <span>Quedan pocos. Ordena pronto</span>
-          </div>
+              <div className="flex items-center gap-2 text-rose-500 font-bold text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                <span>Quedan pocos. Ordena pronto</span>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

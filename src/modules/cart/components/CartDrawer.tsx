@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { useCartStore } from '../hooks/useCartStore'
+import { useCartStore, getItemKey } from '../hooks/useCartStore'
 import { useAuth } from '@/modules/auth/AuthProvider'
 import Link from 'next/link'
 
@@ -65,7 +65,7 @@ export default function CartDrawer() {
             </div>
           ) : (
             items.map(item => (
-              <div key={`${item.product.id}-${item.size}`} className="flex gap-4 py-4 border-b border-stone-50">
+              <div key={getItemKey(item)} className="flex gap-4 py-4 border-b border-stone-50">
                 {/* Imagen */}
                 <div className="w-20 h-20 bg-rose-50 rounded-xl overflow-hidden flex-shrink-0">
                   <img
@@ -81,6 +81,12 @@ export default function CartDrawer() {
                     {item.product.name}
                   </p>
                   <p className="text-xs text-stone-400 mt-0.5">{item.size}</p>
+                  {item.flavor && (
+                    <p className="text-xs text-stone-500 mt-0.5">Relleno: {item.flavor}</p>
+                  )}
+                  {item.message && (
+                    <p className="text-xs text-rose-400 mt-0.5 italic truncate">“{item.message}”</p>
+                  )}
                   <p className="text-rose-500 font-bold text-sm mt-1">
                     {formatPrice(item.product.price)}
                   </p>
@@ -88,19 +94,19 @@ export default function CartDrawer() {
                   <div className="flex items-center gap-3 mt-2">
                     <div className="flex items-center border border-stone-200 rounded-full">
                       <button
-                        onClick={() => updateQuantity(item.product.id, item.size, -1)}
+                        onClick={() => updateQuantity(getItemKey(item), -1)}
                         className="w-7 h-7 flex items-center justify-center text-stone-500 hover:text-rose-500 transition-colors"
                       >−</button>
                       <span className="w-6 text-center text-sm font-bold text-stone-700">
                         {item.quantity}
                       </span>
                       <button
-                        onClick={() => updateQuantity(item.product.id, item.size, 1)}
+                        onClick={() => updateQuantity(getItemKey(item), 1)}
                         className="w-7 h-7 flex items-center justify-center text-stone-500 hover:text-rose-500 transition-colors"
                       >+</button>
                     </div>
                     <button
-                      onClick={() => removeItem(item.product.id, item.size)}
+                      onClick={() => removeItem(getItemKey(item))}
                       className="text-xs text-stone-300 hover:text-red-400 transition-colors"
                     >
                       Eliminar

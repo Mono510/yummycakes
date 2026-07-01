@@ -29,20 +29,45 @@ function parseTiers(description: string | null, basePrice: number): Tier[] {
   return tiers
 }
 
+// Extrae los rellenos a elección desde la sección "RELLENOS" de la descripción.
+// Los rellenos vienen separados por "·".
+function parseFlavors(description: string | null): string[] {
+  if (!description) return []
+  const idx = description.search(/RELLENOS[^\n]*\n/i)
+  if (idx === -1) return []
+  const after = description.slice(idx).replace(/RELLENOS[^\n]*\n/i, '')
+  return after
+    .split('·')
+    .map(s => s.trim().replace(/\.$/, '').trim())
+    .filter(s => s && !s.includes('$') && s.length < 90)
+}
+
 export default function AddToCartButton({ product }: Props) {
   const tiers = parseTiers(product.description ?? null, product.price)
+  const flavors = parseFlavors(product.description ?? null)
+  const isCake = (product as any).categories?.slug === 'tortas'
+
   const [selected, setSelected] = useState(0)
+  const [flavor, setFlavor] = useState('')
+  const [message, setMessage] = useState('')
   const [quantity, setQuantity] = useState(1)
   const [added, setAdded] = useState(false)
-  const { addItem } = useCartStore()
+  const [warn, setWarn] = useState(false)
 
+  const { addItem } = useCartStore()
   const tier = tiers[selected]
+  const needsFlavor = flavors.length > 0 && !flavor
 
   const handleAdd = () => {
-    // Guardamos el producto con el precio de la opción elegida y su etiqueta como "size"
+    if (needsFlavor) {
+      setWarn(true)
+      return
+    }
     const productForCart = { ...product, price: tier.price }
+    const msg = message.trim() || undefined
+    const fla = flavor || undefined
     for (let i = 0; i < quantity; i++) {
-      addItem(productForCart, tier.label)
+      addItem(productForCart, tier.label, fla, msg)
     }
     setAdded(true)
     setTimeout(() => setAdded(false), 2000)
@@ -51,7 +76,7 @@ export default function AddToCartButton({ product }: Props) {
   return (
     <div>
       {/* Selector de tamaño / cantidad */}
-      <div className="mb-8">
+      <div className="mb-7">
         <h4 className="text-xs font-bold uppercase tracking-widest mb-4 text-stone-500">
           {tiers.length > 1 ? 'Elige una opción' : 'Opción'}
         </h4>
@@ -74,6 +99,48 @@ export default function AddToCartButton({ product }: Props) {
           ))}
         </div>
       </div>
+
+      {/* Selector de relleno / sabor */}
+      {flavors.length > 0 && (
+        <div className="mb-7">
+          <h4 className="text-xs font-bold uppercase tracking-widest mb-3 text-stone-500">
+            Elige el relleno <span className="text-rose-400">*</span>
+          </h4>
+          <select
+            value={flavor}
+            onChange={e => { setFlavor(e.target.value); setWarn(false) }}
+            className={`w-full border rounded-xl px-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-rose-200 ${
+              warn && needsFlavor ? 'border-rose-400' : 'border-stone-200'
+            }`}
+          >
+            <option value="">— Selecciona un relleno —</option>
+            {flavors.map(f => (
+              <option key={f} value={f}>{f}</option>
+            ))}
+          </select>
+          {warn && needsFlavor && (
+            <p className="text-xs text-rose-500 font-semibold mt-1.5">Por favor elige un relleno antes de continuar.</p>
+          )}
+        </div>
+      )}
+
+      {/* Mensaje / dedicatoria (solo tortas) */}
+      {isCake && (
+        <div className="mb-7">
+          <h4 className="text-xs font-bold uppercase tracking-widest mb-3 text-stone-500">
+            Mensaje sobre la torta <span className="text-stone-300 normal-case tracking-normal font-normal">(opcional)</span>
+          </h4>
+          <input
+            type="text"
+            value={message}
+            maxLength={80}
+            onChange={e => setMessage(e.target.value)}
+            placeholder="Ej: ¡Feliz cumpleaños, Ana! 🎉"
+            className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-rose-200"
+          />
+          <p className="text-xs text-stone-400 mt-1.5">Lo que escribas aquí se lo indicaremos a la pastelera.</p>
+        </div>
+      )}
 
       {/* Precio de la opción seleccionada */}
       <div className="mb-6">
