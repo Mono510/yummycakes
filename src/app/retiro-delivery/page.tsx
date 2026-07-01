@@ -6,12 +6,6 @@ const HORARIOS = [
   { dia: 'Domingo', hora: 'Cerrado' },
 ]
 
-const COMUNAS = [
-  'Santiago Centro', 'Providencia', 'Ñuñoa', 'Macul',
-  'San Joaquín', 'La Florida', 'Peñalolén', 'Vitacura',
-  'Las Condes', 'Recoleta', 'Independencia', 'Estación Central',
-]
-
 const FAQS = [
   {
     pregunta: '¿Con cuánta anticipación debo hacer mi pedido?',
@@ -200,27 +194,6 @@ export default function RetiroDeliveryPage() {
               </span>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* ── COMUNAS ── */}
-      <section className="bg-stone-50 py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <p className="text-rose-400 font-bold uppercase tracking-[0.3em] text-xs mb-4">Dónde llegaremos</p>
-            <h2 className="font-display text-4xl text-stone-800 font-bold">Comunas con delivery</h2>
-            <p className="text-stone-400 text-sm mt-3">Estas serán las comunas cubiertas cuando habilitemos el delivery (próximamente).</p>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-            {COMUNAS.map((c) => (
-              <div key={c} className="bg-white rounded-xl px-4 py-3 text-center border border-stone-100 shadow-sm">
-                <p className="text-stone-600 text-sm font-medium">{c}</p>
-              </div>
-            ))}
-          </div>
-          <p className="text-center text-stone-400 text-sm mt-8">
-            ¿No ves tu comuna? <a href="https://www.instagram.com" className="text-rose-400 hover:text-rose-500 font-semibold">Escríbenos</a> y coordinamos.
-          </p>
         </div>
       </section>
 
