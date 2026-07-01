@@ -48,7 +48,7 @@ export default function RetiroDeliveryPage() {
             Retiro y Delivery
           </h1>
           <p className="text-stone-300 text-lg max-w-xl mx-auto leading-relaxed">
-            Elige cómo quieres recibir tu torta. Retiro gratis en tienda o delivery a tu puerta.
+            Por ahora trabajamos solo con <span className="text-white font-semibold">retiro en tienda</span>. El delivery a domicilio estará disponible próximamente.
           </p>
         </div>
       </section>
@@ -80,8 +80,8 @@ export default function RetiroDeliveryPage() {
                 </div>
                 <div>
                   <p className="text-xs font-bold uppercase tracking-wider text-stone-400 mb-1">Dirección</p>
-                  <p className="text-stone-700 font-semibold">Ejército 441, Santiago</p>
-                  <p className="text-stone-400 text-sm">Metro Toesca (L2) — 5 min a pie</p>
+                  <p className="text-stone-700 font-semibold">Sotaqui 9237, La Granja</p>
+                  <p className="text-stone-400 text-sm">La Granja, Región Metropolitana</p>
                 </div>
               </div>
 
@@ -127,19 +127,29 @@ export default function RetiroDeliveryPage() {
           </div>
 
           {/* DELIVERY */}
-          <div className="bg-white rounded-3xl border border-stone-100 shadow-sm overflow-hidden">
+          <div className="bg-white rounded-3xl border border-stone-100 shadow-sm overflow-hidden relative">
+            {/* Cinta próximamente */}
+            <div className="absolute top-6 right-6 z-10 bg-amber-400 text-stone-900 text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow">
+              Próximamente
+            </div>
             <div className="bg-stone-800 px-8 py-10">
-              <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-6 text-3xl">
+              <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-6 text-3xl opacity-80">
                 🚗
               </div>
               <h2 className="font-display text-3xl font-bold text-white mb-2">Delivery a domicilio</h2>
-              <p className="text-stone-300 text-sm">Región Metropolitana</p>
+              <p className="text-stone-300 text-sm">Aún no disponible</p>
               <div className="mt-4 inline-block bg-white/10 text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full">
-                $4.000 CLP
+                Próximamente
               </div>
             </div>
 
             <div className="px-8 py-8 space-y-6">
+              {/* Aviso: delivery no disponible aún */}
+              <div className="bg-amber-50 border border-amber-100 rounded-2xl p-5">
+                <p className="text-sm text-stone-600 leading-relaxed">
+                  🚧 El delivery a domicilio <span className="font-semibold">aún no está disponible</span>. Estamos trabajando para habilitarlo pronto. Por ahora, todos los pedidos son con <span className="font-semibold">retiro en tienda</span>.
+                </p>
+              </div>
               {/* Zona */}
               <div className="flex gap-4">
                 <div className="w-10 h-10 bg-stone-50 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -182,12 +192,12 @@ export default function RetiroDeliveryPage() {
                 </ol>
               </div>
 
-              <Link
-                href="/catalogo"
-                className="block text-center bg-rose-400 hover:bg-rose-500 text-white py-3.5 rounded-full font-bold text-sm uppercase tracking-widest transition-all"
+              <span
+                aria-disabled="true"
+                className="block text-center bg-stone-200 text-stone-400 py-3.5 rounded-full font-bold text-sm uppercase tracking-widest cursor-not-allowed select-none"
               >
-                Pedir con delivery
-              </Link>
+                Próximamente
+              </span>
             </div>
           </div>
         </div>
@@ -197,8 +207,9 @@ export default function RetiroDeliveryPage() {
       <section className="bg-stone-50 py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-rose-400 font-bold uppercase tracking-[0.3em] text-xs mb-4">Dónde llegamos</p>
+            <p className="text-rose-400 font-bold uppercase tracking-[0.3em] text-xs mb-4">Dónde llegaremos</p>
             <h2 className="font-display text-4xl text-stone-800 font-bold">Comunas con delivery</h2>
+            <p className="text-stone-400 text-sm mt-3">Estas serán las comunas cubiertas cuando habilitemos el delivery (próximamente).</p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
             {COMUNAS.map((c) => (

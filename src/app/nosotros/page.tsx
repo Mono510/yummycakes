@@ -21,8 +21,8 @@ const VALORES = [
 const HITOS = [
   { numero: '2019', texto: 'Primer pedido — una torta de cumpleaños para la familia.' },
   { numero: '2021', texto: 'Primeros clientes fuera del círculo familiar vía Instagram.' },
-  { numero: '2023', texto: 'Local propio en Ejército 441, Santiago.' },
-  { numero: 'Hoy', texto: 'Más de 500 tortas entregadas con amor.' },
+  { numero: '2023', texto: 'Mi propio espacio en La Granja, Santiago.' },
+  { numero: 'Hoy', texto: 'Más de 200 tortas entregadas con amor.' },
 ]
 
 export default function NosotrosPage() {
@@ -58,7 +58,7 @@ export default function NosotrosPage() {
               />
             </div>
             <div className="absolute -bottom-6 -right-6 bg-white rounded-2xl shadow-xl p-5 border border-stone-100">
-              <p className="text-4xl font-bold font-display text-stone-800">+500</p>
+              <p className="text-4xl font-bold font-display text-stone-800">+200</p>
               <p className="text-stone-400 text-sm font-medium">tortas entregadas</p>
             </div>
           </div>
@@ -76,7 +76,7 @@ export default function NosotrosPage() {
                 Lo que empezó como un hobby en casa se fue convirtiendo en algo real: pedidos de amigos, luego de conocidos, luego de desconocidos que llegaban por Instagram.
               </p>
               <p>
-                En 2023 abrí mi propio espacio en Ejército 441, Santiago. Hoy trabajo con mucha dedicación, y cada torta que preparo lleva el mismo cuidado que la primera.
+                En 2023 abrí mi propio espacio en La Granja, Santiago. Hoy trabajo con mucha dedicación, y cada torta que preparo lleva el mismo cuidado que la primera.
               </p>
             </div>
             <div className="flex items-center gap-3 pt-2">

@@ -103,7 +103,7 @@ export default function CheckoutPage() {
         deliveryType,
         deliveryAddress: deliveryType === 'delivery'
           ? `${selectedAddress?.fullAddress}${fd.get('street_detail') ? `, ${fd.get('street_detail')}` : ''}`
-          : 'Retiro en tienda - Ejército 441, Santiago',
+          : 'Retiro en tienda - Sotaqui 9237, La Granja',
         commune: deliveryType === 'delivery' ? selectedAddress?.commune ?? null : null,
         scheduledDate: fd.get('scheduled_date') as string,
         scheduledTimeSlot: fd.get('time_slot') as string,
@@ -198,27 +198,25 @@ export default function CheckoutPage() {
                         <p className="text-sm font-semibold text-stone-700">Retiro en tienda</p>
                         <span className="text-sm font-bold text-green-600">Gratis</span>
                       </div>
-                      <p className="text-xs text-stone-400 mt-0.5">Ejército 441, Santiago</p>
+                      <p className="text-xs text-stone-400 mt-0.5">Sotaqui 9237, La Granja</p>
                       <p className="text-xs text-stone-400">Lun–Sáb 10:00 a 20:30 hrs</p>
                     </div>
                   </label>
 
-                  {/* Delivery */}
-                  <label
-                    className={`flex items-start gap-3 border rounded-xl px-4 py-4 cursor-pointer transition-all ${deliveryType === 'delivery' ? 'border-rose-300 bg-rose-50' : 'border-stone-200 bg-white hover:border-rose-200'}`}
-                    onClick={() => setDeliveryType('delivery')}
+                  {/* Delivery — aún no disponible */}
+                  <div
+                    aria-disabled="true"
+                    className="flex items-start gap-3 border border-stone-200 rounded-xl px-4 py-4 bg-stone-50 opacity-70 cursor-not-allowed select-none"
                   >
-                    <div className={`w-4 h-4 rounded-full border-2 mt-0.5 flex-shrink-0 flex items-center justify-center ${deliveryType === 'delivery' ? 'border-rose-400' : 'border-stone-300'}`}>
-                      {deliveryType === 'delivery' && <div className="w-2 h-2 rounded-full bg-rose-400" />}
-                    </div>
+                    <div className="w-4 h-4 rounded-full border-2 mt-0.5 flex-shrink-0 border-stone-300" />
                     <div className="flex-1">
                       <div className="flex justify-between items-center">
-                        <p className="text-sm font-semibold text-stone-700">Delivery</p>
-                        <span className="text-sm font-bold text-stone-700">{formatPrice(DELIVERY_COST)}</span>
+                        <p className="text-sm font-semibold text-stone-500">Delivery a domicilio</p>
+                        <span className="text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Próximamente</span>
                       </div>
-                      <p className="text-xs text-stone-400 mt-0.5">Región Metropolitana · 10:00 a 21:00 hrs</p>
+                      <p className="text-xs text-stone-400 mt-0.5">Aún no disponible. Por ahora solo retiro en tienda.</p>
                     </div>
-                  </label>
+                  </div>
                 </div>
 
                 {/* Dirección con OpenStreetMap — solo si es delivery */}

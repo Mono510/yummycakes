@@ -47,7 +47,7 @@ export default async function HomePage() {
             <div className="grid grid-cols-3 gap-6">
               {[
                 { num: '7+', label: 'Años horneando' },
-                { num: '500+', label: 'Pedidos felices' },
+                { num: '200+', label: 'Pedidos felices' },
                 { num: '100%', label: 'Ingredientes frescos' },
               ].map((item) => (
                 <div key={item.label} className="text-center">
