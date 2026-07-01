@@ -11,16 +11,16 @@ const slides = [
     title: 'Dulzura artesanal para tus momentos especiales.',
     subtitle: 'Tortas personalizadas hechas con amor y los mejores ingredientes.',
     cta: 'Ver catálogo',
-    image: 'https://images.unsplash.com/photo-1535141192574-5d4897c12636?q=80&w=1920&auto=format&fit=crop',
+    image: 'https://jmcwnlahznmtfolpgqav.supabase.co/storage/v1/object/public/products/hero-torta-amor.jpg',
   },
   {
     id: 2,
     num: '02',
-    tag: 'Nueva temporada',
-    title: 'Sabores frescos con frutas de estación.',
-    subtitle: 'Descubre nuestras nuevas creaciones con ingredientes de temporada.',
+    tag: 'Mesa dulce',
+    title: 'Bocados perfectos para tu celebración.',
+    subtitle: 'Mini pies, alfajores y más, ideales para coctelería y mesa dulce.',
     cta: 'Hacer mi pedido',
-    image: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?q=80&w=1920&auto=format&fit=crop',
+    image: 'https://jmcwnlahznmtfolpgqav.supabase.co/storage/v1/object/public/products/hero-pies-limon.jpg',
   },
 ]
 

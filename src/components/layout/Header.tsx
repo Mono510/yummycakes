@@ -23,7 +23,7 @@ export default function Header() {
           <img
             src="/logo.png"
             alt="Yummy Cakes"
-            className="h-12 w-auto group-hover:opacity-80 transition-opacity"
+            className="h-9 w-auto group-hover:opacity-80 transition-opacity"
           />
         </Link>
 
