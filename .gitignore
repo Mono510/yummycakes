@@ -4,3 +4,11 @@ node_modules/
 .DS_Store
 dist/
 build/
+
+# Logs
+*.log
+dev.log
+
+# Herramientas locales de agente (no forman parte del proyecto)
+.agents/
+skills-lock.json

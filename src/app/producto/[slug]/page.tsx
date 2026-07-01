@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import AddToCartButton from '@/modules/cart/components/AddToCartButton'
+import ProductGallery from '@/modules/catalog/components/ProductGallery'
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params  // 👈 las dos correcciones están aquí
@@ -22,14 +23,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     <div className="max-w-7xl mx-auto px-4 py-16">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
 
-        <div className="sticky top-32 space-y-4">
-          <div className="aspect-[4/5] rounded-3xl overflow-hidden bg-rose-50">
-            <img
-              src={product.images?.[0] ?? 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=800'}
-              alt={product.name}
-              className="w-full h-full object-cover"
-            />
-          </div>
+        <div className="sticky top-32">
+          <ProductGallery images={product.images} alt={product.name} />
         </div>
 
         <div className="pt-8">
@@ -37,10 +32,10 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             {product.categories?.name}
           </span>
           <h1 className="font-display text-5xl text-stone-800 font-bold mb-4">{product.name}</h1>
-          <div className="text-2xl text-stone-600 mb-8">{formatPrice(product.price)}</div>
+          <div className="text-2xl text-stone-600 mb-8">Desde {formatPrice(product.price)}</div>
 
-          <div className="prose text-stone-600 mb-10 leading-relaxed">
-            <p>{product.description}</p>
+          <div className="text-stone-600 mb-10 leading-relaxed whitespace-pre-line">
+            {product.description}
           </div>
 
           <AddToCartButton product={product} />

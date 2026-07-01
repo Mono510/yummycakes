@@ -57,12 +57,9 @@ export default function BestsellerSection({ products }: BestsellerSectionProps) 
           <span className="text-rose-300/80 text-[9px] font-bold uppercase tracking-[0.4em] block mb-3">
             {(featured as any).categories?.name || 'Destacado'}
           </span>
-          <h3 className="font-display text-3xl md:text-4xl text-white font-bold leading-tight mb-3 max-w-xs">
+          <h3 className="font-display text-3xl md:text-4xl text-white font-bold leading-tight mb-4 max-w-xs">
             {featured.name}
           </h3>
-          <p className="text-stone-400 text-sm mb-6 max-w-xs leading-relaxed">
-            {(featured as any).description || 'Nuestra creación más querida, elaborada con ingredientes seleccionados.'}
-          </p>
           <div className="flex items-center gap-5">
             <span className="text-white font-bold text-lg">{formatPrice(featured.price)}</span>
             <span className="border border-white/30 group-hover:border-rose-400 group-hover:bg-rose-400 text-white text-[10px] uppercase tracking-[0.2em] px-5 py-2 transition-all">

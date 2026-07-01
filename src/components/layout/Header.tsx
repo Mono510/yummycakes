@@ -20,34 +20,11 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between gap-8">
 
         <Link href="/" className="flex-shrink-0 group">
-          <div className="flex items-center gap-3">
-            {/* Logo mark */}
-            <div className="w-11 h-11 flex-shrink-0">
-              <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="22" cy="22" r="22" fill="#FBCFE8"/>
-                {/* Torta */}
-                <rect x="11" y="26" width="22" height="8" rx="2" fill="white" opacity="0.9"/>
-                <rect x="13" y="21" width="18" height="7" rx="2" fill="white" opacity="0.75"/>
-                {/* Velas */}
-                <rect x="16" y="16" width="2.5" height="6" rx="1.2" fill="#f9a8d4"/>
-                <rect x="21" y="14" width="2.5" height="8" rx="1.2" fill="#f9a8d4"/>
-                <rect x="26" y="16" width="2.5" height="6" rx="1.2" fill="#f9a8d4"/>
-                {/* Llamas */}
-                <ellipse cx="17.25" cy="15.5" rx="1.5" ry="2" fill="#fb923c"/>
-                <ellipse cx="22.25" cy="13.5" rx="1.5" ry="2" fill="#fb923c"/>
-                <ellipse cx="27.25" cy="15.5" rx="1.5" ry="2" fill="#fb923c"/>
-              </svg>
-            </div>
-            {/* Wordmark */}
-            <div className="hidden sm:block">
-              <span className="font-display text-xl font-bold text-stone-800 tracking-wide leading-none block group-hover:text-rose-500 transition-colors">
-                Yummy Cakes
-              </span>
-              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-rose-300 leading-none">
-                Pastelería artesanal
-              </span>
-            </div>
-          </div>
+          <img
+            src="/logo.png"
+            alt="Yummy Cakes"
+            className="h-12 w-auto group-hover:opacity-80 transition-opacity"
+          />
         </Link>
 
         {/* Acceso y Carrito */}
